@@ -10,6 +10,7 @@ import Experience from "./sections/Experience";
 import Projects from "./sections/Projects";
 import Blog from "./sections/Blog";
 import Skills from "./sections/Skills";
+import Resume from "./sections/Resume";
 import Contact from "./sections/Contact";
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
             <Projects />
             <Blog />
             <Skills />
+            <Resume />
             <Contact />
           </main>
           <Footer />

@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "./Controls/Slider";
 import ColorPicker from "./Controls/ColorPicker";
+import MusicPlayer from "./Controls/MusicPlayer";
 import { Download, Wind, Settings2 } from "lucide-react";
 import html2canvas from "html2canvas";
 
@@ -130,6 +131,11 @@ export default function ControlPanel({
             onChange={(e) => handleChange("glow", e.target.checked)}
           />
         </label>
+      </div>
+
+      <div className="panel-section">
+        <h3>Audio</h3>
+        <MusicPlayer />
       </div>
 
       <div className="panel-actions">

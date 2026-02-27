@@ -39,6 +39,7 @@ const Mandala = React.memo(function Mandala({
   className = "",
   style = {},
   drawAnimation = false,
+  glow = false,
 }) {
   const cx = size / 2;
   const cy = size / 2;
@@ -72,10 +73,10 @@ const Mandala = React.memo(function Mandala({
             key={`r${r}-p${p}`}
             d={generatePetalPath(cx, cy, ringRadius, petalWidth, angle)}
             fill={isStrokeOnly ? "none" : ringColor}
-            fillOpacity={isStrokeOnly ? 0 : 0.15 + r * 0.05}
+            fillOpacity={isStrokeOnly ? 0 : 0.22 + r * 0.06}
             stroke={ringColor}
-            strokeWidth={isStrokeOnly ? 1 : 0.5}
-            strokeOpacity={0.6 + r * 0.05}
+            strokeWidth={isStrokeOnly ? 1.5 : 1}
+            strokeOpacity={0.75 + r * 0.03}
             style={
               drawAnimation
                 ? {
@@ -98,9 +99,9 @@ const Mandala = React.memo(function Mandala({
           r={ringRadius}
           fill="none"
           stroke={ringColor}
-          strokeWidth={0.3}
-          strokeOpacity={0.3}
-          strokeDasharray={r % 2 === 0 ? "none" : "4 4"}
+          strokeWidth={0.6}
+          strokeOpacity={0.45}
+          strokeDasharray={r % 2 === 0 ? "none" : "6 4"}
         />,
       );
 
@@ -121,6 +122,8 @@ const Mandala = React.memo(function Mandala({
   const animationName =
     direction === "ccw" ? "mandala-spin-ccw" : "mandala-spin-cw";
 
+  const glowFilterId = `mandala-glow-${size}`;
+
   return (
     <svg
       width={size}
@@ -134,11 +137,38 @@ const Mandala = React.memo(function Mandala({
             ? `${animationName} ${rotationSpeed}s linear infinite`
             : undefined,
         willChange: "transform",
+        filter: glow ? `url(#${glowFilterId})` : undefined,
         ...style,
       }}
     >
+      {glow && (
+        <defs>
+          <filter
+            id={glowFilterId}
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      )}
       {/* Center dot */}
-      <circle cx={cx} cy={cy} r={3} fill={colorPrimary} opacity={0.8} />
+      <circle cx={cx} cy={cy} r={4} fill={colorPrimary} opacity={0.9} />
+      <circle
+        cx={cx}
+        cy={cy}
+        r={7}
+        fill="none"
+        stroke={colorPrimary}
+        strokeWidth={0.8}
+        opacity={0.5}
+      />
       {layers.map((petals, i) => (
         <g key={i}>{petals}</g>
       ))}

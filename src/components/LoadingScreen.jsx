@@ -1,57 +1,52 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Mandala from "./Mandala";
-import { personal } from "../data";
 
 export default function LoadingScreen({ onComplete }) {
-  const [exit, setExit] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
-    const exitTimer = setTimeout(() => setExit(true), 3200);
-    const hideTimer = setTimeout(() => {
-      setHidden(true);
-      onComplete?.();
-    }, 3800);
-    return () => {
-      clearTimeout(exitTimer);
-      clearTimeout(hideTimer);
-    };
+    // Artificial minimum loading time
+    const timer = setTimeout(() => {
+      setExiting(true);
+      setTimeout(onComplete, 600); // Wait for exit animation
+    }, 2800);
+
+    return () => clearTimeout(timer);
   }, [onComplete]);
 
-  if (hidden) return null;
-
-  const nameChars = personal.name.split("");
-
   return (
-    <div className={`loading-screen ${exit ? "exit" : ""}`}>
-      <Mandala
-        size={280}
-        colorPrimary="#D4A85A"
-        colorSecondary="#E8732A"
-        colorAccent="#7B5EA7"
-        colorExtra1="#2ABFBF"
-        colorExtra2="#C2385A"
-        colorExtra3="#E8557A"
-        rotationSpeed={0}
-        opacity={1}
-        rings={8}
-        drawAnimation={true}
-      />
-      <div className="loading-name">
-        {nameChars.map((char, i) => (
-          <span
-            key={i}
-            style={{
-              animationDelay: `${1.2 + i * 0.05}s`,
-              display: char === " " ? "inline" : undefined,
-              width: char === " " ? "0.3em" : undefined,
-            }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
-        ))}
+    <div className={`loading-screen ${exiting ? "exit" : ""}`}>
+      <div className="loading-mandala-wrapper" style={{ marginBottom: "2rem" }}>
+        <Mandala
+          size={120}
+          rings={4}
+          rotationSpeed={4}
+          colorPrimary="#D4A85A"
+          colorSecondary="#E8732A"
+          glow={true}
+        />
       </div>
-      <div className="loading-line" style={{ animationDelay: "2.0s" }} />
+      <div
+        className="loading-name"
+        style={{
+          fontSize: "1.2rem",
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          color: "var(--text-secondary)",
+        }}
+      >
+        <span style={{ animationDelay: "0.1s" }}>B</span>
+        <span style={{ animationDelay: "0.2s" }}>r</span>
+        <span style={{ animationDelay: "0.3s" }}>e</span>
+        <span style={{ animationDelay: "0.4s" }}>a</span>
+        <span style={{ animationDelay: "0.5s" }}>t</span>
+        <span style={{ animationDelay: "0.6s" }}>h</span>
+        <span style={{ animationDelay: "0.7s" }}>e</span>
+        <span style={{ animationDelay: "0.8s" }}>.</span>
+        <span style={{ animationDelay: "0.9s" }}>.</span>
+        <span style={{ animationDelay: "1.0s" }}>.</span>
+      </div>
+      <div className="loading-line" style={{ width: "120px" }} />
     </div>
   );
 }

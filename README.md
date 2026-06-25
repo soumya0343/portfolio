@@ -36,8 +36,35 @@ To run Mandala Studio on your local machine:
     ```
 4.  Open your browser and navigate to `http://localhost:5173` (or the URL provided in your terminal).
 
+### Other Scripts
+
+```bash
+npm run build     # Production build (outputs to dist/)
+npm run preview   # Preview the production build locally
+npm run lint      # Run ESLint
+```
+
 ## Usage
 
 Use the sidebar control panel to adjust the mandala's geometry, colors, and effects.
 Select an ambient track from the Audio section, adjust the volume, and click "Zen / Breathing Mode" to initiate a guided meditation session.
 Export your creation anytime using the "Export PNG" button.
+
+## Project Structure
+
+```
+src/
+├── main.jsx                  # React entry point (StrictMode)
+├── App.jsx                   # Root layout, mandala state, breathing animation
+├── index.css                 # Global styles (zen/dark theme)
+├── components/
+│   ├── Mandala.jsx           # SVG mandala generator (geometry + glow)
+│   ├── ControlPanel.jsx      # Sidebar controls + PNG export
+│   ├── LoadingScreen.jsx     # Intro splash with spinning mandala
+│   └── Controls/
+│       ├── Slider.jsx        # Generic range slider
+│       ├── ColorPicker.jsx   # Color swatch input
+│       └── MusicPlayer.jsx   # Web Audio API ambient soundscapes
+```
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the data flow, rendering pipeline, and audio engine.
